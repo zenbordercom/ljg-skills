@@ -1,173 +1,32 @@
 ---
 name: ljg-present
-description: "演讲铸造器。两种风格：默认高桥流（一页一词、墨字奶白底、单字撑满屏），-s 标语流（基于 orgmode outline 层级忠实呈现，黑红黄大色块、ultra-bold 错位，原文不动只做美化）。使用时用户会说：'高桥流'、'讲这个'、'present'、'做成演讲'、'做个高桥流 PPT'、'呈现一下'、'铸成演示'、'做个 slides'；或加 -s：'标语流'、'宣言体'、'slogan'、'manifesto'、'红黑流'、'big studios 风'、'按 outline 美化'。输出单文件 HTML 到 ~/Downloads/。"
+description: "演讲铸造器（Outline-Faithful）。基于 orgmode/markdown outline 层级 1:1 视觉化呈现——色块大字、ultra-bold 错位，原文不动只做美化。三档主题色 black/red/yellow（默认 black 或按 filetags 推断），可用 -r/-b/-y 显式覆盖；可用 --cyber 走黑底绿字 cyber-hacker 风。使用时用户会说：'讲这个'、'present'、'做成演讲'、'呈现一下'、'铸成演示'、'做个 slides'、'标语流'、'宣言体'、'slogan'、'manifesto'、'按 outline 美化'。输出单文件 HTML 到 ~/Downloads/。"
 user_invocable: true
-version: "2.1.1"
+version: "3.0.0"
 ---
 
 # ljg-present: 演讲铸造器
 
-把文本削成节拍/把 outline 铸成色块，把 PPT 降为节拍器/视觉化渲染器，把舞台还给讲的人。
-
-## 两种模式（mode flags）
-
-| Flag | 名称 | 何时用 |
-|---|---|---|
-| (默认) | **高桥流** | 内容含蓄、思辨、想做"单字节拍"、奶白底墨字 |
-| `-s` | **标语流** | 已有 orgmode outline，想直接视觉化呈现，原文不动只做美化 |
-
-## 模式分发逻辑
-
-接到调用时按以下顺序判断：
-
-1. 用户输入含 `-s` / `标语流` / `slogan` / `manifesto` / `宣言体` / `红黑流` / `big studios` / `BIG 风` / `按 outline 美化` → **走标语流**
-2. 否则 → **走高桥流（默认）**
-
----
-
-# 模式一：高桥流（默认）
-
-把文本削成节拍——一页一个关键词，字撑满屏。
-
-## 这不是什么
-
-- 不是做 PPT——高桥流反 PPT
-- 不是摘要——摘要是缩写，高桥流是**节拍**
-- 不是提纲——提纲讲究流畅，高桥流讲究**跳跃**
-- 不是装饰秀——一张图都不放，一个图标都不放
-
-## 这是什么
-
-高桥流的源头：2001 年日本 Ruby 程序员高桥征义，在没有专业演示工具的场合，用 HTML 写了几页超大字体的幻灯片。意外走红，成了一种流派。
-
-三条铁律，去掉任何一条都不是高桥流：
-
-1. **一页一个思想单元**——不是一页一段话，是一页一个"此刻该敲响的那个词"
-2. **字大到撑满屏幕**——视觉上屏幕只剩这几个字，没有留白作为"呼吸"，字本身就是呼吸
-3. **无图、无表、无装饰**——演讲者是主角，PPT 是节拍器。节拍器不需要花样
-
-## 核心哲学
-
-PPT 是节拍器，不是信息载体。
-
-传统 PPT：信息密集，观众读屏幕，演讲者念 PPT。
-高桥流：信息稀疏，观众听演讲，PPT 打点。
-
-这意味着**提炼的每一页不是"缩写"，是演讲者口述中"此刻听众脑中该闪过的那个词"**。
-
-## 提炼规则（高桥流）
-
-### 提炼 ≠ 摘要
-
-| 摘要（错） | 提炼（对） |
-|---|---|
-| 500 字压成 100 字 | 500 字压成 "作者真正在钉的那颗钉子" |
-| 保留信息 | 保留**刻度** |
-| 连续过渡 | 并列跳跃 |
-| 让人省时间阅读 | 让人在演讲时恰好想到这个词 |
-
-### 六步提炼法
-
-第一步：**通读找钉子**
- — 作者真正在钉的那颗钉子是什么？1 个，最多 3 个
- — 钉子是"他反复回到的那个点"，不是标题不是主题句
-
-第二步：**排出节奏**
- — 围绕钉子，排 8-24 个"思想刻度"
- — 每个刻度是听众脑中"啪"的一下的那个瞬间
-
-第三步：**压字到 ≤ 12 字**
- — 能单字就单字
- — 能短语就短语
- — 能名词就不要动词
- — 能名词就不要句子
-
-第四步：**剥修饰与连接**
- — 去形容词（除非形容词就是刻度本身）
- — 去"因此/所以/但是/然而"——这些是口述的职责
- — 去"我们/你们/大家"——高桥流没有"我们"
- — 去感叹号、问号——视觉不喊，让演讲者去喊
-
-第五步：**检查跳跃感**
- — 相邻两页要有"啪啪"的错位感，不是"滑滑"的连续感
- — 单页能独立成立才算合格
-
-第六步：**保留"收束页"**
- — 最后一页是收束，不是总结
- — 一个字、一个符号、或一个反问式短语
-
-### 提炼举例
-
-**原文**（160 字）：
-> 我们总以为自己是在选择，其实我们大部分时间在默认。你选了这家公司，是因为真的比别家好吗？还是因为 HR 先找到你？你选择了每天起床的时间，是因为想清楚了吗？还是因为手机闹钟设在那里？默认是一种选择。但它是别人替你做的选择。想活得不像别人，第一步是意识到自己正在被默认。
-
-**高桥流提炼**（12 页）：
-```
-1.  选择
-2.  大部分时间
-3.  在默认
-4.  默认 ≠ 选择
-5.  谁替你选的
-6.  HR 先找你
-7.  闹钟先响
-8.  别人替你选
-9.  第一步
-10. 意识到
-11. 正在被默认
-12. 醒
-```
-
-注意：最后一页「醒」，一个字。这是收束。
-
-## 高桥流视觉规范
-
-- 底色：和紙奶白 `#F7F3E9`
-- 主字：墨黑 `#1A1A1A`
-- 点睛色：朱砂红 `#C03C28`（仅用于收束页或作者要强调的那个词）
-- 字体链：`"PingFang SC", "Heiti SC", "STHeiti", -apple-system, sans-serif`
-- 无图、无图标、无插图、无表格、无边框、无过渡动画
-
-## 高桥流调用流程
-
-1. 获取内容（URL → WebFetch / 文件 → Read / 粘贴 → 直接用）
-2. 按六步法提炼为 JSON 数组：
-   ```json
-   [
-     {"text": "选择", "emphasis": false},
-     {"text": "大部分时间", "emphasis": false},
-     ...
-     {"text": "醒", "emphasis": true}
-   ]
-   ```
-3. Read `assets/takahashi_template.html`，把 `{{SLIDES_JSON}}` 替换为 JSON 字符串，`{{TITLE}}` 替换为主题（≤ 20 字）
-4. 写文件到 `~/Downloads/{name}-高桥流.html`
-5. 报告路径，告知翻页键 `→ ← Space F Home End`
-
----
-
-# 模式二：标语流（`-s`）—— Outline-Faithful
-
-把 orgmode outline 视觉化——色块大字、ultra-bold 错位，**内容原样保留**，只做美化呈现。
-
-参考审美：**Felipe Franco / BIG STUDIOS** 的 manifesto 美学（红黑黄三色 + ultra-bold + left-aligned 大字撑屏）。
+把 outline 铸成色块——视觉化渲染器，把舞台还给讲的人。
 
 ## 这不是什么
 
 - **不是 manifesto 提炼器**——不抽"那句话"，不写"完整断言句"，不重组顺序
-- **不是高桥流**——高桥流削词到单字，标语流忠实于原 outline
+- **不是高桥流**——不削词到单字
 - **不是 deck-style**——不是企业 PPT 那种规整版式
 
 ## 这是什么
 
 **Outline → 视觉化渲染器**：
+
 - 输入 = orgmode 文件（`*` `**` 层级 + 列表 + 表格 + 强调）
 - 输出 = 视觉美化的 slogan-style HTML，**1:1 保留 outline 结构**
 - 不抽提、不重写、不浓缩——只决定**怎么把这一行/这一节渲染为页面**
 
-视觉语言（保留 BIG STUDIOS 调性）：
-- **整篇一个主题色**——红/黑/黄三选一
+视觉语言（参考审美：Felipe Franco / BIG STUDIOS 的 manifesto 美学）：
+- **整篇一个主题色**——red/black/yellow 三选一
 - **left-aligned 舞台美学**——文字左对齐，超大字号自然撑屏
-- **超大字 ultra-bold**——单字 64vmin、长句 15vmin
+- **超大字 ultra-bold**——单字 70vmin、长句 11vmin
 - **多行错位**——按 outline 嵌套深度自动 indent 0/1/2
 - **关键词自动换色**——`*强调*` `~code~` 自动 hl
 - **章节切换打节拍**——一级标题 `*` → emphasis 封面页，其余 → theme 页
@@ -175,9 +34,6 @@ PPT 是节拍器，不是信息载体。
 ## 核心哲学
 
 **Outline 是真理。Skill 是渲染器。**
-
-旧版（v2.0）：找 manifesto → 提炼断言句 → 写新内容
-新版（v2.1）：解析 outline → 映射元素 → 美化呈现
 
 不动内容是一条铁律：
 - **标题不改字**
@@ -212,6 +68,7 @@ PPT 是节拍器，不是信息载体。
 | `「」` 内的关键词 | 视觉单元（保留括号，不强制 hl） |
 | 引用 `> ...` | theme 页，indent 1 显示 |
 | 分隔符 `-----` | 独立 emphasis 休止页（无内容，纯色块） |
+| `#+begin_example` 块 | 独立 pre 页（monospace 渲染 ASCII art） |
 
 ### 文件级元数据
 
@@ -226,10 +83,11 @@ PPT 是节拍器，不是信息载体。
 
 **优先级**：显式参数 > filetags 推断 > 默认 black
 
-显式覆盖：
-- `-s -r` / `-s --theme=red` → red
-- `-s -b` / `-s --theme=black` → black
-- `-s -y` / `-s --theme=yellow` → yellow
+显式覆盖（参数）：
+- `-r` / `--theme=red` → red
+- `-b` / `--theme=black` → black
+- `-y` / `--theme=yellow` → yellow
+- `--cyber` → cyber-hacker（黑底绿字 + CRT 扫描线 + HUD + 终端光标）
 
 filetags 自动推断：
 
@@ -277,6 +135,7 @@ filetags 自动推断：
 ## 映射举例
 
 **输入**（org 节选）：
+
 ```org
 #+title: 美团分享
 #+filetags: :share:
@@ -300,24 +159,18 @@ filetags 自动推断：
 | 3 | theme | 「人类革命：能力让渡的层级跃迁」 | 段落，单句 |
 | 4 | theme | 两行错位：「『人之为人』重新定义」/「社会组织重排」 | 列表 ≤4 项一页 |
 
-theme 自动选 `red`（filetags `:share:`），title=`美团分享`，subtitle 留空（无 `#+author:` 或 `#+date:`）。
+theme 自动选 `red`（filetags `:share:`），title=`美团分享`。
 
-**对比旧版（v2.0 的错误做法，已废弃）**：
-- ❌ 抽出 manifesto「AI 替你做完所有 How，你的 Why 在哪？」
-- ❌ 重写「每次革命，人都让出一部分能力。」
-- ❌ 拼出新口号「时间在收紧。」
-
-新版（v2.1）：作者写什么就呈现什么，skill 只负责美化，不负责创作。
-
-## 标语流视觉规范
+## 视觉规范
 
 ### 色板（仅 4 色）
 
 ```
 --c-black:  #1A1A1A
---c-red:    #E93323
+--c-red:    #E63956
 --c-yellow: #FFD400
 --c-white:  #FFFFFF
+--c-gold:   #FFE082
 ```
 
 ### 主题映射（一篇只用 ≤3 色）
@@ -325,10 +178,9 @@ theme 自动选 `red`（filetags `:share:`），title=`美团分享`，subtitle 
 | theme | 默认页 | emphasis 页 | hl 色（仅 theme 页） |
 |---|---|---|---|
 | **black** 沉思 | 黑底白字 | 红底白字 | 红色 #E63956 |
-| **red** 宣言 | 红底白字 | 黑底白字 | **柔金黄 #FFE082** |
+| **red** 宣言 | 红底白字 | 黑底白字 | 柔金黄 #FFE082 |
 | **yellow** 反讽 | 黄底黑字 | 黑底白字 | 红色 #E63956 |
-
-**v2.1.1 颜色调整**：red theme 的 hl 从黑色改为柔金黄 `#FFE082`——红底配黑字视觉脏，金黄是红色的天然搭档（红配金，对比清晰但不刺眼）。`--c-red` 也从 BIG STUDIOS 的 #E93323 改为小红书系深红 `#E63956`（偏粉，比官方 #FF2442 暗 8% 防扎眼）。
+| **cyber** 终端 | 黑底矩阵绿 | 绿底黑字 | 白色 #FFFFFF（带绿光 + CRT 扫描线 + 顶部 HUD） |
 
 ### 字体栈
 
@@ -338,67 +190,76 @@ font-weight: 900
 letter-spacing: -0.05em
 ```
 
+cyber 主题额外字体（用于 HUD/footer/pre）：
+
+```
+"JetBrains Mono", "Fira Code", "IBM Plex Mono", "Source Code Pro", "Menlo", monospace
+```
+
 ### 字号自适应
 
 按本页"最长那一行"的字符数（CJK 字符按 1.8 计权）自动分档：
 
 | 档位 | 字符数 | 字号 |
 |---|---|---|
-| single | ≤ 2  | 80vmin |
-| short  | 3-6 | 55vmin |
-| medium | 7-14 | 35vmin |
-| long   | 15-26 | 22vmin |
-| xlong  | 27+ | 14vmin |
+| single | ≤ 2  | 70vmin |
+| short  | 3-6 | 48vmin |
+| medium | 7-14 | 28vmin |
+| long   | 15-26 | 16vmin |
+| xlong  | 27+ | 10vmin |
 
-多行页自动降一档。字号 v2.1.1 再次上调 ~30%——16:9 横屏下大字自然撑满，消除右侧空白。
+多行页自动降一档。
 
 ### 排版
 
 - 内容区域 padding 6vmin 7vmin（贴近边缘，让大字有撑满感）
 - **lines 块水平居中 + 行内左对齐**——`align-items: center` 让 lines 块整体在屏幕水平居中（消除 16:9 右侧空白），但每一行的文字仍是 left-aligned 起始，indent 0/1/2 在块内制造错位
 - letter-spacing `-0.05em`——ultra-bold 应有的字字挤压感
-- line-height `1.05`、行间 gap `0.15em`——多行折行也有呼吸空间，比 v2.1.0 的 0.95/0.02 显著放宽
+- line-height `1.05`、行间 gap `0.15em`——多行折行也有呼吸空间
 - 文字垂直方向：居中
 - 页脚：左下页码 + 右下副标题，13px monospace，opacity 0.5
 
-## 标语流 JSON Schema（保持不变）
+## JSON Schema
 
 ```jsonc
 {
-  "theme": "black|red|yellow",          // 主题色（必选，决定整篇调性）
+  "theme": "black|red|yellow|cyber",      // 主题色（必选，决定整篇调性）
   "title": "演讲标题（浏览器 tab）",
   "subtitle": "副标题/品牌（页脚右下，可选）",
   "slides": [
     // 默认 theme 页
     {
-      "lines": [                         // 1-N 行
+      "lines": [                          // 1-N 行
         {
-          "indent": 0,                   // 0/1/2 缩进档（按 outline 嵌套深度）
-          "align": "left|center|right",  // 可选，默认 left
-          "chunks": [                    // 行内片段
+          "indent": 0,                    // 0/1/2 缩进档（按 outline 嵌套深度）
+          "align": "left|center|right",   // 可选，默认 left
+          "chunks": [                     // 行内片段
             {"t": "句子前段"},
-            {"t": "高亮词", "hl": true}, // 仅 theme 页生效
+            {"t": "高亮词", "hl": true},  // 仅 theme 页生效
             {"t": "句子后段"}
           ]
         }
       ]
     },
     // emphasis 页（accent 底色，整页就是高亮，不允许 inline hl）
-    { "emphasis": true, "lines": [...] }
+    { "emphasis": true, "lines": [...] },
+    // pre 页（ASCII art / 预格式化块）
+    { "preTitle": "diagram_name", "pre": "...preformatted text..." }
   ]
 }
 ```
 
 **字段省略约定**：
 - 不写 `emphasis` = 默认 theme 页
-- emphasis 页内 `chunks[].hl: true` 会被忽略（CSS `color: inherit`）
+- emphasis 页内 `chunks[].hl: true` 会被忽略
+- 写 `pre` 字段则该页为 ASCII art 页（monospace 渲染）
 
-## 标语流调用流程
+## 调用流程
 
 1. **获取内容**（文件 → Read / 粘贴 → 直接用 / URL → WebFetch）
 2. **解析 outline**：
-   - org：识别 `*` `**` 标题层级、`-` `1.` 列表、`|...|` 表格、`*强调*` / `~code~`
-   - markdown（兼容）：`#` `##` 标题、`-` `*` 列表、`|` 表格、`**强调**`
+   - org：识别 `*` `**` 标题层级、`-` `1.` 列表、`|...|` 表格、`*强调*` / `~code~`、`#+begin_example` 块
+   - markdown（兼容）：`#` `##` 标题、`-` `*` 列表、`|` 表格、`**强调**`、` ``` ` 代码块
    - 纯文本（fallback）：按空行分段，每段一页
 3. **推断 theme**：显式参数 > `#+filetags:` > 默认 black
 4. **应用映射规则**生成 slides 数组：
@@ -408,16 +269,17 @@ letter-spacing: -0.05em
    - 列表 → theme 页（错位 indent + 分页规则）
    - 表格 → theme 页（保留结构 + 分页规则）
    - 强调 → 自动 hl
-5. **Read** `assets/slogan_template.html`
+   - example 块 → 独立 pre 页
+5. **Read** `assets/slogan_template.html`（cyber 主题需在模板基础上注入扫描线/HUD/光标 CSS）
 6. **替换占位符**：
    - `{{TITLE}}` → 文件 `#+title:` 或显式参数
    - `{{SUBTITLE}}` → `#+author:` `#+date:` 拼接，或留空
-   - `{{THEME}}` → 推断或显式参数（black|red|yellow）
+   - `{{THEME}}` → 推断或显式参数（black|red|yellow|cyber）
    - `{{SLIDES_JSON}}` → JSON.stringify(slides)
-7. **写文件**到 `~/Downloads/{name}-标语流.html`（`{name}` 取自 `#+title:` 或文件名，去标点，≤ 20 字）
+7. **写文件**到 `~/Downloads/{name}.html`（`{name}` 取自 `#+title:` 或文件名，去标点，≤ 20 字）
 8. **报告路径** + 翻页键 `→ ← Space F Home End`
 
-## 标语流品味准则
+## 品味准则
 
 - **outline 是真理**——不动字、不抽提、不重写、不重排
 - **一级标题 = emphasis 封面**——天然的章节断点，自动节拍
@@ -428,41 +290,27 @@ letter-spacing: -0.05em
 - **页脚保留**——页码 + 副标题不要删，那是品牌的冷气
 - **左对齐不居中**——VACAT 美学的灵魂
 
-## 标语流禁区
+## 禁区
 
 - **不抽 manifesto**——不要"找钉子"，作者已经写好了 outline
 - **不写新句子**——不要"完整断言句"重组
 - **不重排顺序**——按 outline 顺序输出，作者怎么排就怎么呈现
 - **不删内容**——所有列表项/段落都要呈现，不挑挑拣拣
-- **不放图片/图标**——色块就是图
+- **不放图片/图标**——色块就是图（cyber 主题的 HUD/扫描线除外，那是主题的一部分）
 - **不用过渡动画**——硬切
 - **不在 emphasis 页用 inline hl**——emphasis 整页就是高亮，再 hl 就乱了
 - **不混用多个 theme**——一篇一个气质，不切换
 - **不要副标题字过大**——页脚 13px，气场不能抢主标
 - **不擅自加 emphasis**——只有一级标题、首末页、`-----` 是 emphasis，别的不要
 
----
-
-# 模式选择决策树
-
-```
-用户输入 →
-├─ 含 -s / 标语流 / slogan / manifesto / 宣言体 / 红黑流 / big studios / 按 outline 美化?
-│   是 → 标语流（outline-faithful）
-│   否 → ↓
-├─ 内容已是规整 outline，想直接美化呈现 → 提示"用 -s 走 outline-faithful 模式"
-├─ 内容偏论证、思辨、内省，需要削成节拍 → 高桥流
-├─ 内容偏宣言、口号、情绪冲击 → 默认走高桥流，但提示"也可用 -s 标语流"
-```
-
 ## 中文默认
 
-两种模式都默认输出中文。除非原文是英文且用户要求保留英文。
+默认输出中文。除非原文是英文且用户要求保留英文。
 
-## 通用交互（两种模式一致）
+## 通用交互
 
-- `→` `Space` `Enter` `j`：下一页
-- `←` `k`：上一页
+- `→` `Space` `Enter` `j` `PageDown`：下一页（含蓝牙翻页笔）
+- `←` `k` `PageUp`：上一页（含蓝牙翻页笔）
 - `Home`/`End`：跳首末
 - `f`/`F`：全屏切换
 - 触屏左右滑：翻页
